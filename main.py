@@ -1,10 +1,10 @@
 import discord
 
-from web_scraper import scrape
+from web_scrape.web_scraper import scrape
 from configparser import ConfigParser
 
 config = ConfigParser()
-config.read("/config/config.ini")
+config.read("config.ini")
 
 token = config.get('BOT', 'token')
 
