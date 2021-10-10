@@ -1,8 +1,12 @@
 import discord
 
 from web_scraper import scrape
+from configparser import ConfigParser
 
-token = ''
+config = ConfigParser()
+config.read("config.ini")
+
+token = config.get('BOT', 'token')
 
 link = 'https://www.google.com/search?q=new+grad+software+engineer+california&ibp=htl;jobs#htivrt=jobs&fpstate=tldetail&htichips=date_posted:3days'
 
