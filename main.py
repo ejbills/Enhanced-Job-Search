@@ -1,28 +1,32 @@
 import discord
+from discord.ext import commands
+from configparser import ConfigParser
 
 from web_scrape.web_scraper import scrape
-from configparser import ConfigParser
 
 config = ConfigParser()
 config.read("config.ini")
 
+job_bot = commands.Bot(command_prefix='!')
+
 token = config.get('BOT', 'token')
 
-link = 'https://www.google.com/search?q=new+grad+software+engineer+california&ibp=htl;jobs#htivrt=jobs&fpstate=tldetail&htichips=date_posted:3days'
-
-class MyClient(discord.Client):
-    async def on_ready(self):
-        print('Logged on as {0}!'.format(self.user))
-
-    async def on_message(self, message):
-        print('Message from {0.author}: {0.content}'.format(message))
-
-        if message.content == '!job':
-            jobs_returned = scrape(link, 3)
-
-            await message.channel.send(jobs_returned)
-            # for job in jobs_returned:
-            #     await message.channel.send(job)
+google_job_link = 'https://www.google.com/search?q={}&ibp=htl;jobs#htivrt=jobs&fpstate=tldetail&htichips=date_posted:3days'
 
 
-MyClient().run(token)
+class EnhancedJobSearch(commands.Bot):
+    async def on_ready(ctx):
+        if job_bot.is_ready():
+            print('Logged on as {0}!'.format(ctx.user))
+
+    @job_bot.command()
+    async def job(ctx, *args):
+        temp_link = str(args[1]).replace(" ", "+")
+
+        if args[0] == 'google':
+            jobs_returned = scrape(google_job_link.format(temp_link), 3)
+
+            await ctx.send(jobs_returned)
+
+
+job_bot.run(token)
