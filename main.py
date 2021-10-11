@@ -25,8 +25,11 @@ class EnhancedJobSearch(commands.Bot):
 
         if args[0] == 'google':
             jobs_returned = scrape(google_job_link.format(temp_link), 3)
-
-            await ctx.send(jobs_returned)
+            
+            # company, job title, date, url
+            for job in jobs_returned:
+                embedded_job = discord.Embed(title=job[0], description=job[1] + "\n" + job[2], url=job[3])
+                await ctx.send(embed=embedded_job)
 
 
 job_bot.run(token)
