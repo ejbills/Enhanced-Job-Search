@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 def scrape(url, iterations):
     counter = 0
-
+    
     jobs = []
 
     session = requests.Session()
@@ -21,14 +21,17 @@ def scrape(url, iterations):
     links = soup.find_all("a", {"href": True})
 
     for i in range(iterations):
-        jobs.append(title[i].text if title[i] else 'No job title found')
-        jobs.append(company[i].text if company[i] else 'No company found')
-        jobs.append(posted_date[i].text if posted_date[i] else 'No job post date found')
+        job = []
+        job.append(company[i].text if company[i] else 'No company found')
+        job.append(title[i].text if title[i] else 'No job title found')
+        job.append(posted_date[i].text if posted_date[i] else 'No job post date found')
+        
+        jobs.append(job)
 
     for link in links:
         if link.get('title') and counter < iterations:
             if 'Apply on' in link.get('title'):
-                jobs.append(link.get('href') if len(link.text) > 1 else 'No job link found')
+                jobs[counter].append(link.get('href') if len(link.text) > 1 else 'No job link found')
 
                 counter += 1
 
