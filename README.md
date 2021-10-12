@@ -1,5 +1,5 @@
 Enhanced Job Search
-===================
+=======================
 Scrapes multiple job boards and returns top results from each site.
 
 **Python Version:**
@@ -13,8 +13,4 @@ Scrapes multiple job boards and returns top results from each site.
 
 **Running the App:**
 
-    - Run py main.py (must config bot token)
-
-**Running Tests:**
-
-    - (!!!WIP) Run py -m unittest app_test.py in terminal
+    - Run py app.py
