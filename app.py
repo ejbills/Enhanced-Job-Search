@@ -22,11 +22,13 @@ def searched():
     temp_jobs_list = copy.copy(Job.jobs_list) # Handles stacked results being returned
     Job.jobs_list.clear()
 
-    return render_template("index.html", jobs_list=temp_jobs_list)
+    total_jobs = len(temp_jobs_list)
+
+    return render_template("index.html", jobs_list=temp_jobs_list, total_jobs=total_jobs)
 
 
 def search(job_title):
-    jobs_returned = scrape(job_title, 10)
+    jobs_returned = scrape(job_title, 15)
 
     for job in jobs_returned:
         obj = Job(job[0], job[1], job[2], job[3], Job.jobs_list)

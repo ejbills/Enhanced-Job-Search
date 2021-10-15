@@ -18,10 +18,13 @@
 			<form action="/searched" method="POST">
 				<div class="row justify-content-end">
 					<div class="col-3 my-1">
-						<input type="text" class="form-control" name="job-title" placeholder="Job title" />
+						<input type="text" class="form-control" name="job-title" placeholder="Job Title" />
 					</div>
 					<div class="col-2 my-1">
 						<button type="submit" class="btn btn-md btn-primary">Search</button>
+					</div>
+					<div class="col-4 my-1" align="left">
+						<div>Amount of jobs: {{ total_jobs }}</div>
 					</div>
 				</div>
 			</form>
@@ -42,7 +45,7 @@
 						<td>{{ job.company }}</td>
 						<td>{{ job.job_title }}</td>
 						<td>{{ job.date }}</td>
-						<td><a href="{{ job.url }}">Apply on {{ job.company }} career site</a></td>
+						<td><a href="{{ job.url }}" target="_blank">Apply to {{ job.company }}</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
