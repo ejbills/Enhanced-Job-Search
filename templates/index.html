@@ -42,7 +42,7 @@
 						<td>{{ job.company }}</td>
 						<td>{{ job.job_title }}</td>
 						<td>{{ job.date }}</td>
-						<td>{{ job.url }}</td>
+						<td><a href="{{ job.url }}">Apply on {{ job.company }} career site</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>

@@ -2,13 +2,17 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-def scrape(url, iterations):
+google_link = 'https://www.google.com/search?q={}&ibp=htl;jobs#htivrt=jobs&fpstate=tldetail&htichips=date_posted:3days'
+
+
+def scrape(search_query, iterations):
     counter = 0
-    
     jobs = []
 
+    temp_query = search_query.replace(" ", "+")
+
     session = requests.Session()
-    response = session.get(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 ('
+    response = session.get(google_link.format(temp_query), headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 ('
                                                        'KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'})
 
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -16,7 +20,7 @@ def scrape(url, iterations):
     # Finds game title element by "name" attribute
     title = soup.findAll("div", {"class": re.compile('.*BjJfJf PUpOsf.*')}, limit=iterations)
     company = soup.findAll("div", {"class": re.compile('.*vNEEBe.*')}, limit=iterations)
-    posted_date = soup.findAll("span", {"class": re.compile('.*SuWscb.*')}, limit=iterations)
+    posted_date = soup.findAll("span", text=re.compile(r'ago'), limit=iterations)
     links = soup.find_all("a", {"href": True})
 
     for i in range(iterations):
