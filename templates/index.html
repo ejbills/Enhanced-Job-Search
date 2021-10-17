@@ -23,8 +23,15 @@
 					<div class="col-2 my-1">
 						<button type="submit" class="btn btn-md btn-primary">Search</button>
 					</div>
-					<div class="col-4 my-1" align="left">
+					<div class="col-4 my-1">
 						<div>Amount of jobs: {{ total_jobs }}</div>
+					</div>
+					<div class="col-5 my-1">
+						<label for="consultancyFilter">Show consultancy firms?</label>
+						<select name="consultancy-filter" id="consultancyFilter" class="selectpicker form-control">
+							<option value="yes">Yes</option>
+							<option value="no">No</option>
+						</select>
 					</div>
 				</div>
 			</form>
