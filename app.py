@@ -5,6 +5,8 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+consultancy_firms = {0: 'tata', 1: 'infosys', 2: 'revature'}
+
 
 # Root domain
 @app.route("/")
@@ -16,8 +18,9 @@ def index():
 @app.route("/searched", methods=["POST"])
 def searched():
     query = request.form["job-title"]
+    config = request.form.get("consultancy-filter")
 
-    search(query)
+    search(query, config)
 
     temp_jobs_list = copy.copy(Job.jobs_list) # Handles stacked results being returned
     Job.jobs_list.clear()
@@ -27,12 +30,17 @@ def searched():
     return render_template("index.html", jobs_list=temp_jobs_list, total_jobs=total_jobs)
 
 
-def search(job_title):
+def search(job_title, config):
     jobs_returned = scrape(job_title, 15)
 
     for job in jobs_returned:
-        obj = Job(job[0], job[1], job[2], job[3], Job.jobs_list)
-        obj.add()
+        if str(config) == 'no':
+            if job[0].lower() not in consultancy_firms.values():
+                obj = Job(job[0], job[1], job[2], job[3], Job.jobs_list)
+                obj.add()
+        else:
+            obj = Job(job[0], job[1], job[2], job[3], Job.jobs_list)
+            obj.add()
 
 
 class Job:
