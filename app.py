@@ -5,7 +5,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-consultancy_firms = {0: 'tata', 1: 'infosys', 2: 'revature'}
+consultancy_firms = {0: 'tata', 1: 'infosys', 2: 'revature', 3: 'cybercoders'}
 
 
 # Root domain
@@ -31,7 +31,7 @@ def searched():
 
 
 def search(job_title, config):
-    jobs_returned = scrape(job_title, 15)
+    jobs_returned = scrape(job_title)
 
     for job in jobs_returned:
         if str(config) == 'no':
