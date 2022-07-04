@@ -8,7 +8,6 @@ Scrapes multiple job boards and returns top results from each site.
 
 **Installation Instructions:**
 
-    - Un-zip packaged project files
     - Run pip install -r requirements.txt
 
 **Running the App:**
