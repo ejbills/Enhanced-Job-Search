@@ -4,7 +4,7 @@ Scrapes multiple job boards and returns top results from each site.
 
 **Python Version:**
 
-    - Project is built and deployed in Python version 3.9
+    - Project is built and deployed in Python version 3.10
 
 **Installation Instructions:**
 
