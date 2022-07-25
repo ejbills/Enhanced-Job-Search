@@ -2,11 +2,15 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-job_boards = ['https://www.indeed.com/jobs?q={}&l=California&start={}',
+from supporting.states import states_dict
+
+job_boards = ['https://www.indeed.com/jobs?q={}&l={}&start={}',
               'https://www.glassdoor.com/Job/{}-jobs-SRCH_KO0,17_IP{}.htm']
 
-def scrape(search_query):
+def scrape(search_query, shorthand_location):
     jobs = []
+
+    selected_location = states_dict[shorthand_location]
 
     for job_board in job_boards:
         page_count = 0
@@ -16,7 +20,7 @@ def scrape(search_query):
         temp_query = search_query.replace(" ", "%20" if indeed_query else '-')
 
         session = requests.Session()
-        response = session.get(job_board.format(temp_query, '00' if indeed_query else '1'),
+        response = session.get(job_board.format(temp_query, selected_location, '00' if indeed_query else '1'),
                                headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 ('
                                                       'KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'})
 
@@ -40,7 +44,7 @@ def scrape(search_query):
                     pages.append(i)
 
         for page in pages:
-            response = session.get(job_board.format(temp_query, page),
+            response = session.get(job_board.format(temp_query, selected_location, page),
                                    headers={
                                        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 ('
                                                      'KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'})
@@ -49,13 +53,13 @@ def scrape(search_query):
 
             company = soup.findAll("span", {"class": re.compile(r'companyName')})
             title = soup.findAll("span", {"title": re.compile(r'.*')})
-            posted_date = soup.findAll("span", {"class": re.compile(r'date')})
-            link = soup.find_all("a", {"class": re.compile(r'jcs-JobTitle')}, {"href": True})
+            company_location = soup.findAll("div", {"class": re.compile(r'companyLocation')})
+            link = soup.findAll("a", {"class": re.compile(r'jcs-JobTitle')})
 
             for i in range(len(company)):
                 job = [company[i].text if company[i] else 'No company found',
                        title[i].text if title[i] else 'No job title found',
-                       posted_date[i].text if posted_date[i] else 'No job post date found',
+                       company_location[i].text if company_location[i] else 'No job location found',
                        'https://indeed.com' + link[i].get('href') if link[i] else 'No job link found']
 
                 jobs.append(job)
