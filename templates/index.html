@@ -13,12 +13,20 @@
 
 	<body>
 		<div class="container-fluid">
-			<h1 class="h1 text-center">Welcome to Enhanced Job Search</h1>
+			<h1 class="h1 text-center">Enhanced Job Search</h1>
 
 			<form action="/searched" method="POST">
 				<div class="row justify-content-end">
 					<div class="col-3 my-1">
-						<input type="text" class="form-control" name="job-title" placeholder="Job Title" />
+						<input type="text" class="form-control" name="job-title" placeholder="Search..." />
+					</div>
+					<div class="col-3 my-1">
+						<label>Choose a location: </label>
+							<select name="location" >
+								{% for location in location_list %}
+									<option value="{{ location }}" selected>{{ location }}</option>
+								{% endfor %}
+							</select>
 					</div>
 					<div class="col-2 my-1">
 						<button type="submit" class="btn btn-md btn-primary">Search</button>
@@ -41,7 +49,7 @@
 					<tr>
 						<th scope="col">Company</th>
 						<th scope="col">Job Title</th>
-						<th scope="col">Date</th>
+						<th scope="col">Job Location</th>
 						<th scope="col">URL</th>
 					</tr>
 				</thead>
@@ -51,7 +59,7 @@
 					<tr>
 						<td>{{ job.company }}</td>
 						<td>{{ job.job_title }}</td>
-						<td>{{ job.date }}</td>
+						<td>{{ job.company_location }}</td>
 						<td><a href="{{ job.url }}" target="_blank">Apply to {{ job.company }}</a></td>
 					</tr>
 					{% endfor %}
